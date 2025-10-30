@@ -1,3 +1,6 @@
+// logger.cpp - Simple logging implementation
+// Thread-unsafe; writes INFO to stdout, ERROR to stderr with prefixes.
+
 #include "assignment1/logger.h"
 #include <iostream>
 
