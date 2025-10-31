@@ -1,15 +1,23 @@
+/*
+ * matrix.cpp — Square matrix operations in row-major layout
+ * Provides basic container, initialization routines, and naive O(N^3) multiply.
+ * Uses flat vector storage for C++98 compatibility; no cache-friendly blocking.
+ */
 #include "assignment2/matrix.h"
 #include <stdexcept>
 
 namespace assignment2 {
 
+// Construct n×n matrix initialized to zero; throws if n <= 0
 Matrix::Matrix(int size) : n(size), data()
 {
   if (n <= 0) throw std::invalid_argument("Matrix size must be > 0");
+  // Cast to size_type to avoid signed overflow for large N
   data.assign(static_cast<std::vector<double>::size_type>(n) *
               static_cast<std::vector<double>::size_type>(n), 0.0);
 }
 
+// Row-major indexing: row i, column j → data[i*n + j]
 double& Matrix::at(int i, int j)
 {
   return data[static_cast<std::vector<double>::size_type>(i * n + j)];
@@ -20,6 +28,7 @@ const double& Matrix::at(int i, int j) const
   return data[static_cast<std::vector<double>::size_type>(i * n + j)];
 }
 
+// Initialize A[i][j] = i+1 (same value along each row for testing)
 void initA(Matrix& A)
 {
   const int N = A.n;
@@ -31,6 +40,7 @@ void initA(Matrix& A)
   }
 }
 
+// Initialize B[i][j] = 1/(j+1) (same value down each column for testing)
 void initB(Matrix& B)
 {
   const int N = B.n;
@@ -42,6 +52,8 @@ void initB(Matrix& B)
   }
 }
 
+// Classic triple-loop C = A·B: 2*N^3 FLOPs; no cache optimization
+// Throws if matrices have mismatched dimensions
 void multiply(const Matrix& A, const Matrix& B, Matrix& C)
 {
   const int N = A.n;

@@ -1,3 +1,7 @@
+/*
+ * logger.cpp — Implementation of console logging
+ * Simple wrappers around std::cout and std::cerr with prefixes.
+ */
 #include "assignment2/logger.h"
 #include <iostream>
 

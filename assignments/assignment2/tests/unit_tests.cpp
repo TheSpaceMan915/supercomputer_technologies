@@ -1,3 +1,8 @@
+/*
+ * unit_tests.cpp — Unity-based unit tests for assignment2 matrix operations
+ * Tests correctness via closed-form formula C[i][j] = N*(i+1)/(j+1) and
+ * validates timing/FLOPS are non-negative. Uses extern "C" for Unity integration.
+ */
 #include "assignment2/matrix.h"
 
 /* Wrap Unity C header for C++ linkage */
@@ -12,6 +17,7 @@ using assignment2::initA;
 using assignment2::initB;
 using assignment2::multiply;
 
+// Test small N=3 case against known closed-form: C[i][j] = N*(i+1)/(j+1)
 static void test_small_N_exact_values(void)
 {
   const int N = 3;
@@ -28,6 +34,7 @@ static void test_small_N_exact_values(void)
   TEST_ASSERT_DOUBLE_WITHIN(eps, static_cast<double>(N * N / N), C.at(N-1,N-1));     // N
 }
 
+// Sanity check that timing and FLOPS formula are non-negative
 static void test_flops_and_time_non_negative(void)
 {
   const int N = 2;
@@ -47,6 +54,7 @@ static void test_flops_and_time_non_negative(void)
   TEST_ASSERT_DOUBLE_WITHIN(0.0, expect, got);
 }
 
+// Unity test runner entry point
 int main(void)
 {
   UnityBegin("assignment2");
