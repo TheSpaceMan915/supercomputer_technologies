@@ -94,7 +94,7 @@ int main(int argc, char** argv)
     // Report absolute error
     {
         std::ostringstream oss;
-        oss.setf(std::ios::fixed);
+        oss.setf(std::ios::scientific);
         oss.precision(12);
         oss << "abs error vs M_PI = " << abs_err;
         log_info(oss.str());

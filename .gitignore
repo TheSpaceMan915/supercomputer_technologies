@@ -15,3 +15,4 @@ CTestTestfile.cmake
 *.swo
 *.VC.db
 *.VC.opendb
+*.exe

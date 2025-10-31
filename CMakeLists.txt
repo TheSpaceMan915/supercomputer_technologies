@@ -1,6 +1,6 @@
 # Parent CMakeLists.txt - orchestrates all child projects
 # Sets C++98 standard globally and enables out-of-source builds only.
-# Aggregates assignments/assignment1 as a subdirectory and enables CTest for testing.
+# Aggregates assignments/assignment1 and assignments/assignment2 as subdirectories and enables CTest for testing.
 
 cmake_minimum_required(VERSION 3.8.2)
 project(supercomputer_technologies LANGUAGES C CXX)
@@ -20,3 +20,6 @@ include(CTest)
 
 # Add the assignment1 child project (π approximation via midpoint rule)
 add_subdirectory(assignments/assignment1)
+
+# Add the assignment2 child project (matrix multiplication)
+add_subdirectory(assignments/assignment2)

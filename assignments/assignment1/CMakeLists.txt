@@ -48,13 +48,13 @@ set_common_warnings(assignment1)
 include(CTest)
 if(BUILD_TESTING)
   # Unity framework (C): vendored under tests/vendor/unity
-  add_library(unity STATIC tests/vendor/unity/unity.c)
-  target_include_directories(unity PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/vendor/unity)
-  set_common_warnings(unity)
+  add_library(assignment1_unity STATIC tests/vendor/unity/unity.c)
+  target_include_directories(assignment1_unity PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/vendor/unity)
+  set_common_warnings(assignment1_unity)
 
   # Unit tests executable: wraps Unity (C) from C++ via extern "C"
   add_executable(assignment1_tests tests/unit_tests.cpp)
-  target_link_libraries(assignment1_tests PRIVATE assignment1_core unity)
+  target_link_libraries(assignment1_tests PRIVATE assignment1_core assignment1_unity)
   target_include_directories(assignment1_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/tests
