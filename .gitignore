@@ -15,4 +15,5 @@ CTestTestfile.cmake
 *.swo
 *.VC.db
 *.VC.opendb
-*.exe
+*.exe_codeql_build_dir/
+_codeql_detected_source_root
