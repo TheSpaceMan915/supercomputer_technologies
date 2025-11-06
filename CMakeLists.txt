@@ -23,3 +23,6 @@ add_subdirectory(assignments/assignment1)
 
 # Add the assignment2 child project (matrix multiplication)
 add_subdirectory(assignments/assignment2)
+
+# Add the assignment3-task1 child project (π via midpoint with OpenMP reduction)
+add_subdirectory(assignments/assignment3-task1)
