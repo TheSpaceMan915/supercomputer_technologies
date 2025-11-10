@@ -1,3 +1,7 @@
+/* main.cpp: Command-line driver for parallel matrix multiplication benchmark.
+ * Parses N from argv, initializes A and B, performs multiplication, and reports timing.
+ * Uses OpenMP for timing and parallelization when available; falls back to serial otherwise.
+ */
 #include "assignment3_task2/matrix.h"
 #include "assignment3_task2/logger.h"
 
@@ -23,6 +27,9 @@ static void print_usage()
     std::fprintf(stderr, "Usage: assignment3-task2 <N>\n");
 }
 
+// Parse and validate N from command-line arguments.
+// Returns false on error (prints diagnostic and usage).
+// Enforces: N > 0, N <= INT_MAX, and 3*N*N*sizeof(double) <= 1 GiB.
 static bool parse_N(int argc, char** argv, int& N)
 {
     if (argc != 2)
@@ -63,6 +70,7 @@ static bool parse_N(int argc, char** argv, int& N)
         return false;
     }
 
+    // Prevent excessive memory allocation: 3 N×N matrices must fit in 1 GiB.
     const double bytes =
         3.0 * static_cast<double>(val) * static_cast<double>(val) *
         static_cast<double>(sizeof(double));
@@ -84,10 +92,12 @@ static bool parse_N(int argc, char** argv, int& N)
     return true;
 }
 
+// High-resolution wall-clock timer.
+// Uses omp_get_wtime() when OpenMP is available; otherwise std::clock().
 static double now_seconds()
 {
 #ifdef _OPENMP
-    return omp_get_wtime();
+    return omp_get_wtime();  // More accurate wall-clock time
 #else
     const std::clock_t c = std::clock();
     return static_cast<double>(c) / static_cast<double>(CLOCKS_PER_SEC);
@@ -110,6 +120,7 @@ int main(int argc, char** argv)
         log_info(oss.str());
     }
 
+    // Detect OpenMP availability at compile time.
     bool parallel = false;
 #ifdef _OPENMP
     parallel = true;
@@ -118,7 +129,7 @@ int main(int argc, char** argv)
     if (parallel)
     {
 #ifdef _OPENMP
-        int threads = omp_get_max_threads();
+        int threads = omp_get_max_threads();  // Respects OMP_NUM_THREADS
         if (threads < 1) { threads = 1; }
         std::ostringstream oss;
         oss << "mode=parallel threads=" << threads;
@@ -163,6 +174,7 @@ int main(int argc, char** argv)
     const double elapsed_s = (t1 > t0) ? (t1 - t0) : 0.0;
     const double elapsed_ms = elapsed_s * 1000.0;
 
+    // Print corner elements to verify computation (sanity check).
     if (N > 0)
     {
         const int last = N - 1;
@@ -181,6 +193,7 @@ int main(int argc, char** argv)
         log_info(oss.str());
     }
 
+    // Compute GFLOPS: matrix multiply is 2*N^3 floating-point operations.
     const double flops =
         2.0 *
         static_cast<double>(N) *
