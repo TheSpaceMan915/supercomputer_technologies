@@ -1,3 +1,5 @@
+// unit_tests.cpp: Unity-based tests for assignment3-task2 matrix operations.
+// Validates correctness of initialization and serial/parallel multiplication.
 #include "assignment3_task2/matrix.h"
 
 extern "C" {
@@ -6,6 +8,8 @@ extern "C" {
 
 #include <vector>
 
+// Test small 2×2 matrix multiplication for known values.
+// A = [[1,1], [2,2]], B = [[1,0.5], [1,0.5]] => C = [[2,1], [4,2]]
 static void test_small_N_2(void)
 {
     const int N = 2;
@@ -24,6 +28,8 @@ static void test_small_N_2(void)
     TEST_ASSERT_DOUBLE_WITHIN(1e-12, 2.0, C[3]);
 }
 
+// Verify parallel implementation produces identical results to serial.
+// Tests 3×3 case; deterministic result regardless of thread count.
 static void test_parallel_matches_serial_3(void)
 {
     const int N = 3;

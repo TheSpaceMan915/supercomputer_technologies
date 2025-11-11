@@ -1,3 +1,6 @@
+/* logger.cpp: Simple stdout/stderr logging implementation.
+ * Each call outputs a single line with prefix; thread-safe via stream atomicity.
+ */
 #include "assignment3_task2/logger.h"
 #include <iostream>
 
